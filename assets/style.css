@@ -1,0 +1,137 @@
+/* assets/style.css */
+
+/* Center the navbar brand */
+
+/* Custom glow effect for cards */
+.card.glow-effect {
+    position: relative;
+    /* Ensure the card is positioned relative for pseudo-element positioning */
+    z-index: 1;
+    /* Set a higher stacking context */
+    overflow: hidden;
+    /* Hide the glow overflow */
+}
+
+/* Add the glow using a pseudo-element */
+.card.glow-effect::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background: radial-gradient(circle at center,
+            rgba(0, 123, 255, 0.5),
+            transparent 70%);
+    z-index: -1;
+    /* Place the pseudo-element behind the card */
+}
+
+/* Alternative glow using box-shadow */
+.card.glow-effect {
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+}
+
+
+.navbar-brand-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/* Align nav links to the left */
+.navbar .nav-links {
+    margin-right: auto;
+}
+
+/* Ensure navbar content is relative for positioning */
+.navbar {
+    position: relative;
+}
+
+/* Additional styling for navbar links (optional) */
+.navbar .nav-link {
+    color: #ffffff;
+    padding-right: 15px;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    color: #dddddd;
+}
+
+/* Active link styling */
+.navbar .nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+    .navbar-brand-center {
+        position: static;
+        transform: none;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .navbar .nav-links {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .navbar {
+        flex-direction: column;
+    }
+}
+
+/* assets/style.css */
+
+/* Existing styles... */
+
+/* Style for nav-link-icon */
+.nav-link-icon {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin-right: 15px;
+    border-radius: 20px;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+}
+
+.nav-link-icon.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+}
+
+.nav-link-icon .fas {
+    margin-right: 5px;
+    color: #ffffff;
+}
+
+.nav-link-text {
+    color: #ffffff;
+}
+
+.navbar .nav-links {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link-icon:hover .fas,
+.nav-link-icon:hover .nav-link-text {
+    color: #ffffff;
+}
+
+.nav-link-icon.active .fas,
+.nav-link-icon.active .nav-link-text {
+    color: #ffffff;
+}
