@@ -33,15 +33,15 @@ from callbacks.building1_subpages import devices_callbacks, schedule_callbacks, 
 def display_page(pathname):
     if pathname == '/':
         return home_layout
-    elif pathname == '/building1':
+    elif pathname == '/GNIREBUILDING540':
         return building1_layout
     elif pathname == '/building2':
         return building2_layout
-    elif pathname =='/building1/devices':
+    elif pathname =='/GNIREBUILDING540/devices':
         return devices_layout
-    elif pathname =='/building1/schedule':
+    elif pathname =='/GNIREBUILDING540/schedule':
         return schedule_layout
-    elif pathname =='/building1/control':
+    elif pathname =='/GNIREBUILDING540/control':
         return control_layout
     else:
         print(pathname)

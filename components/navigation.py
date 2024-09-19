@@ -25,7 +25,7 @@ navbar = dbc.Navbar(
                             html.I(className="fas fa-building"),  # Building icon
                             html.Span(" GNIRE Building 540", className="nav-link-text")
                         ],
-                        href="/building1",
+                        href="/GNIREBUILDING540",
                         active="exact",
                         className="nav-link-icon"
                     )

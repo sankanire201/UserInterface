@@ -13,7 +13,8 @@ def create_building_navbar(building_id):
     nav_links = [
         {'label': 'Devices Info', 'icon_class': 'fas fa-info-circle', 'href': f'/{building_id}/devices'},
         {'label': 'Schedule', 'icon_class': 'fas fa-calendar-alt', 'href': f'/{building_id}/schedule'},
-        {'label': 'Control', 'icon_class': 'fas fa-sliders-h', 'href': f'/{building_id}/control'}
+        {'label': 'Control', 'icon_class': 'fas fa-sliders-h', 'href': f'/{building_id}/control'},
+        {'label': 'Analytics', 'icon_class': 'fas fa-chart-line ', 'href': f'/{building_id}/analytics'}
     ]
 
     nav_items = []
@@ -41,12 +42,21 @@ def create_building_navbar(building_id):
                     navbar=True,
                     className='mr-auto',  # Aligns nav items to the left
                 ),
+                        # Centered brand title
+        dbc.NavbarBrand(
+            f"{building_id}",
+            href="/",
+            className="navbar-brand-center",
+        ),
             ],
             fluid=True,  # Make the container fluid to span full width
+            
         ),
         color='light',
         dark=False,
         className='secondary-nav',
+        
+        
     )
 
     return building_navbar

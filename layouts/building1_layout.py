@@ -385,7 +385,7 @@ consumption_card = dbc.Card([
 ], className='card mb-4 shadow')
 
 # Create the secondary navigation bar
-building1_navbar = create_building_navbar('building1')
+building1_navbar = create_building_navbar('GNIREBUILDING540')
 # Include a dcc.Store component
 data_store = dcc.Store(id='building1-data-store')
 building1_layout = dbc.Container([
