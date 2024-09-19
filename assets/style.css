@@ -135,3 +135,192 @@
 .nav-link-icon.active .nav-link-text {
     color: #ffffff;
 }
+
+/* assets/style.css */
+
+/* Existing styles... */
+
+/* Pricing card styles */
+.pricing-label {
+    font-weight: bold;
+    color: #343a40;
+    /* Dark gray */
+}
+
+.pricing-value {
+    font-size: 1.2em;
+    color: #007bff;
+    /* Bootstrap primary color */
+}
+
+.pricing-trend {
+    font-size: 1.2em;
+}
+
+.card-body div {
+    display: flex;
+    align-items: center;
+}
+
+/* EV Card Container */
+.ev-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* EV Image */
+.ev-image {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.battery-image {
+    width: 20%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* EV Status Flexbox */
+.ev-status-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* EV Status Icon */
+#ev-status-icon {
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+
+/* EV Status Text */
+#building1-ev-status {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* EV Battery Level */
+#building1-ev-battery-level {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+/* Additional Styling if Needed */
+.ev-status-flex span {
+    display: block;
+}
+
+
+/* assets/style.css */
+
+/* Adjust chart titles */
+.plotly-graph-div .main-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Adjust margins and padding inside cards if needed */
+.card-body {
+    padding: 15px;
+}
+
+/* Responsive adjustments for charts */
+@media (max-width: 767px) {
+    .card {
+        margin-bottom: 20px;
+    }
+}
+
+/* assets/style.css */
+
+/* Style for the secondary navigation bar */
+.secondary-nav {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* assets/style.css */
+
+/* Style for the secondary navigation bar */
+.secondary-nav {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Remove any centering from the nav links */
+.secondary-nav .navbar-nav {
+    margin-left: 0;
+    /* Ensure nav items start from the left */
+}
+
+/* Style for the navigation links */
+.building-nav-link {
+    color: black !important;
+    /* Set font color to black */
+    font-weight: bold;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    /* Rounded bounding box */
+    margin-right: 5px;
+    /* Space between nav items */
+    transition: background-color 0.2s;
+}
+
+/* Style for the icons within the navigation links */
+.building-nav-link .fa {
+    margin-right: 8px;
+    /* Space between icon and text */
+}
+
+/* Hover effect */
+.building-nav-link:hover {
+    background-color: #f0f0f0;
+    /* Light gray on hover */
+    text-decoration: none;
+}
+
+/* Active link styling */
+.building-nav-link.active {
+    background-color: #e0e0e0;
+    /* Slightly darker gray for active link */
+    color: black !important;
+}
+
+/* Remove default underline on links */
+.building-nav-link,
+.building-nav-link:focus,
+.building-nav-link:active {
+    text-decoration: none;
+    color: black !important;
+}
+
+.min-height-ev-card {
+    min-height: 400px;
+    /* Set your desired minimum height */
+}
+
+.battery-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    /* Align text to the left */
+    align-items: center;
+    /* Vertically center the text */
+    gap: 10px;
+    /* Add spacing between items */
+}
+
+.small-text {
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 10px;
+
+}

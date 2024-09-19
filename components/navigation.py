@@ -23,7 +23,7 @@ navbar = dbc.Navbar(
                     dbc.NavLink(
                         [
                             html.I(className="fas fa-building"),  # Building icon
-                            html.Span(" Building 1", className="nav-link-text")
+                            html.Span(" GNIRE Building 540", className="nav-link-text")
                         ],
                         href="/building1",
                         active="exact",
@@ -34,7 +34,7 @@ navbar = dbc.Navbar(
                     dbc.NavLink(
                         [
                             html.I(className="fas fa-building"),  # Building icon
-                            html.Span(" Building 2", className="nav-link-text")
+                            html.Span(" GLEAMM Microgrid", className="nav-link-text")
                         ],
                         href="/building2",
                         active="exact",
@@ -47,7 +47,7 @@ navbar = dbc.Navbar(
         ),
         # Centered brand title
         dbc.NavbarBrand(
-            "Energy Management System",
+            "GROUP NIRE PRIORITY LOAD CONTROL PROGRAM",
             href="/",
             className="navbar-brand-center",
         ),
