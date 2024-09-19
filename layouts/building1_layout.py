@@ -5,7 +5,34 @@ import plotly.express as px
 import pandas as pd
 import random
 from components.building_navbar import create_building_navbar  # Import the secondary navbar
+import plotly.graph_objects as go
 
+#place holder for battery information table
+
+battery_status_table =  go.Figure(data=[go.Table(
+  header = dict(
+    values = [['<b>Inv buy</b>'],['<b>Inv sell</b>'],['<b>Inv load</b>'],['<b>Inv out</b>'],['<b>Batt SOC</b>'],['<b>Batt Volt</b>']],
+    line_color='darkslategray',
+    fill_color='royalblue',
+    align=['left','center'],
+    font=dict(color='white', size=12),
+  ),
+  cells=dict(
+    values=[str(10)+'kW',str(10)+'kW',str(10)+'kW',str(10)+'kW',str(10)+'%',str(220)+'V'],
+    line_color='darkslategray',
+    fill=dict(color=['paleturquoise', 'white']),
+    fill_color='white',
+    align=['center', 'center'],
+    font=dict(color='black', size=14,weight='bold'),
+    height=30)
+    )
+])
+
+battery_status_table.update_layout(
+    autosize=True,
+    height=80,
+    margin=dict(l=5, r=5, t=5, b=5),  # Remove extra margins
+)
 #place holder for the bar chart
 
 data = {
@@ -257,17 +284,10 @@ ev_card = dbc.Card([
 battery_inner_card_1 = dbc.Card(
     [
         dbc.CardBody(
-            html.Div([
-
-                html.H5(id='building1-battery-inv-buy', className='card-text small-text'),
-                html.H5(id='building1-battery-inv-out', className='card-text small-text'),
-                html.H5(id='building1-battery-inv-load', className='card-text small-text'),
-                html.H5(id='building1-battery-inv-sell', className='card-text small-text'),
-
-            ], className='battery-container flex-row')  # Add flex-row class for horizontal alignment
-        ),
+             html.Div(dcc.Graph(id='building1-battery-status-table', figure=battery_status_table)),className='battery-container flex-row', style={'width': '100%', 'padding': '0px', 'margin-left': '0px'},  # Add flex-row class for horizontal alignment
+        )
     ],
-    className="mb-4 shadow",
+    className="mb-4 shadow", style={'width': '100%', 'padding': '0px', 'margin': '0px'},
 )
 
 # Define the second inner card with Flexbox to display text horizontally
@@ -277,10 +297,10 @@ battery_inner_card_2 = dbc.Card(
             html.Div([
                 html.H5(id='building1-battery-SOC', className='small-text'),
                 html.H5(id='building1-battery-voltage', className='small-text'),
-            ], className='battery-container flex-row')  # Add flex-row class for horizontal alignment
+            ], className='battery-container flex-row' , style={'width': '100%', 'padding': '0px', 'margin': '0px'})  # Add flex-row class for horizontal alignment
         ),
     ],
-    className="mb-4 shadow",
+    className="mb-4 shadow  ", style={'width': '100%', 'padding': '0px', 'margin': '0px'},
 )
 
 
@@ -304,20 +324,18 @@ battery_card = dbc.Card([
             # EV Status with Icon using Flexbox
             html.Div([
                 html.I(id='battery-status-icon'),
-                html.Span(id='building1-battery-status')
-            ], className='ev-status-flex'),
+                html.Span(id='building1-battery-status'),
+                                html.Div(
+                    battery_inner_card_1, 
+                    style={'width': '100%', 'padding': '0', 'margin': '0'}
+                ),  #
+            ], className='battery-status-flex' , style={'width': '100%', 'padding': '0','margin': '0'}),
             # EV Battery Level
-            dbc.Row(
-                    [
-                        dbc.Col(battery_inner_card_1, width=6),  # 6 units width (50%)
-                        dbc.Col(battery_inner_card_2, width=6),  # 6 units width (50%)
-                    ],
-                    className="g-4"  # Adds spacing between columns
-                ),
+              
 
-        ], className='ev-container'),
+        ], className='ev-container', style={'width': '100%', 'padding': '0','margin': '0'}),
     ),
-], className='card mb-4 shadow')
+], className='card mb-4 shadow',  style={'width': '100%', 'padding': '0', 'margin': '0'})
 
 
 # Pricing Information Card
@@ -373,8 +391,8 @@ data_store = dcc.Store(id='building1-data-store')
 building1_layout = dbc.Container([
     html.Div(style={'height': '30px'}),  # Spacer
     # Include the secondary navigation bar
-    data_store,
     building1_navbar,
+    data_store,
     # Row with the three existing cards
     dbc.Row([
         dbc.Col(

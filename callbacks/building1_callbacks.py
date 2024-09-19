@@ -12,6 +12,14 @@ import mysql.connector
 from datetime import datetime,timedelta
 import plotly.graph_objects as go
 from pandas import json_normalize
+from dash import Input, Output, State, html
+from app_instance import app
+
+
+
+
+
+
 # Helper function to guess missing threshold values
 def guess_missing_thresholds(thresholds_list):
     last_thresholds = None
@@ -266,12 +274,7 @@ def update_realtime_marginal_price(data):
      Output('production-consumption-chart', 'figure'),
      Output('generation-time-chart', 'figure'),
      Output('lmp-time-chart', 'figure'),
-     Output('building1-battery-SOC', 'children'),
-     Output('building1-battery-voltage', 'children'),
-     Output('building1-battery-inv-buy', 'children'),
-     Output('building1-battery-inv-load', 'children'),
-     Output('building1-battery-inv-sell', 'children'),
-     Output('building1-battery-inv-out', 'children'),
+    Output('building1-battery-status-table', 'figure'),
      Output('building1-consumption-bar', 'figure'),],
     Input('building1-data-store', 'data')
 )
@@ -282,16 +285,15 @@ def update_consumption_time_chart(data):
     dfmeters = pd.concat([
     json_normalize(data, sep='_').assign(timestamp=timestamp) for timestamp, data in data['meters']
 ], ignore_index=True)
-    dfmeters_latest=dfmeters.iloc[-1]
-    battery_SOC='Battery Charge: '+str(dfmeters_latest['storage_Battery_SOC'])+ '%'
-    battery_voltage='Battery Voltage: '+str(dfmeters_latest['storage_Battery_Battery_voltage']/10)+ 'V'
-    battery_inv_load='Inv Load: '+str(dfmeters_latest['storage_Battery_INV1_Load_kW']+dfmeters_latest['storage_Battery_INV2_Load_kW']+dfmeters_latest['storage_Battery_INV3_Load_kW'])+ 'kW'
-    battery_inv_buy='Inv Buy: '+str(dfmeters_latest['storage_Battery_INV1_Buy_kW']+dfmeters_latest['storage_Battery_INV2_Buy_kW']+dfmeters_latest['storage_Battery_INV3_Buy_kW'])+ 'kW'
-    battery_inv_sell='Inv Sell: '+str(dfmeters_latest['storage_Battery_INV1_Sell_kW']+dfmeters_latest['storage_Battery_INV2_Sell_kW']+dfmeters_latest['storage_Battery_INV3_Sell_kW'])+ 'kW'
-    battery_cc_watt='Battery Charge controller: '+str(dfmeters_latest['storage_Battery_CC1_watt']+dfmeters_latest['storage_Battery_CC2_watt']+dfmeters_latest['storage_Battery_CC3_watt'])+ 'W'
-            
-    battery_inv_output='Inv Out: ' +str(dfmeters_latest['storage_Battery_INV1_Output_kW']+dfmeters_latest['storage_Battery_INV2_Output_kW']+dfmeters_latest['storage_Battery_INV3_Output_kW'])+ 'kW'
-            
+    dfmeters_latest=dfmeters.iloc[1]
+    battery_SOC=dfmeters_latest['storage_Battery_SOC']
+    battery_voltage=dfmeters_latest['storage_Battery_Battery_voltage']/10
+    battery_inv_load=dfmeters_latest['storage_Battery_INV1_Load_kW']+dfmeters_latest['storage_Battery_INV2_Load_kW']+dfmeters_latest['storage_Battery_INV3_Load_kW']
+    battery_inv_buy=dfmeters_latest['storage_Battery_INV1_Buy_kW']+dfmeters_latest['storage_Battery_INV2_Buy_kW']+dfmeters_latest['storage_Battery_INV3_Buy_kW']
+    battery_inv_sell=dfmeters_latest['storage_Battery_INV1_Sell_kW']+dfmeters_latest['storage_Battery_INV2_Sell_kW']+dfmeters_latest['storage_Battery_INV3_Sell_kW']
+    battery_cc_watt=round((dfmeters_latest['storage_Battery_CC1_watt']+dfmeters_latest['storage_Battery_CC2_watt']+dfmeters_latest['storage_Battery_CC3_watt'])/1000,1)
+    battery_inv_output=dfmeters_latest['storage_Battery_INV1_Output_kW']+dfmeters_latest['storage_Battery_INV2_Output_kW']+dfmeters_latest['storage_Battery_INV3_Output_kW']
+    battery_charging_current = (dfmeters_latest['storage_Battery_CC1_battery_current']+dfmeters_latest['storage_Battery_CC2_battery_current']+dfmeters_latest['storage_Battery_CC3_battery_current'])/10 
             #html.P(id='building1-battery-SOC', className='card-text'),
             # html.P(id='building1-battery-voltage', className='card-text'),
             # html.P(id='building1-battery-AC-drop', className='card-text'),
@@ -319,6 +321,34 @@ def update_consumption_time_chart(data):
     figlmp=go.Figure()
     latestwind=pd.to_numeric(dfmeters['wind_Bergey_inverter_output_power'].iloc[-1])
     
+    
+    
+    
+    battery_status_table =  go.Figure(data=[go.Table(
+    header = dict(
+        values = [['<b>Inv Buy</b>'],['<b>Inv Sell</b>'],['<b>Inv load</b>'],['<b>Inv Out</b>'],['<b>Solar Input</b>'],['<b>Batt SOC</b>'],['<b>Batt Charging Amp</b>'],['<b>Batt Volt</b>']],
+        line_color='darkslategray',
+        fill_color='royalblue',
+        align=['center','center'],
+        font=dict(color='white', size=16),
+    ),
+    cells=dict(
+        values=[str(battery_inv_buy)+' kW',str(battery_inv_sell)+' kW',str(battery_inv_load)+' kW',str(battery_inv_output)+' kW',str(battery_cc_watt)+' kW',str(battery_SOC)+' %',str(battery_charging_current)+' A',str(battery_voltage)+' V'],
+        line_color='darkslategray',
+        fill=dict(color=['paleturquoise', 'white']),
+        fill_color='white',
+        align=['center', 'center'],
+        font=dict(family="Courier New",color='black', size=16,weight='bold'),
+        height=40,)
+        )
+    ])
+
+    battery_status_table.update_layout(
+        autosize=True,
+        height=130,
+        margin=dict(l=5, r=5, t=5, b=0),  # Remove extra margins
+)
+    
 # define the charts
     figlmp.add_trace(go.Scatter(x=df_total_consumption['timestamp'], y=lmptrend,
                     line=dict(color='red', width=2),
@@ -336,7 +366,8 @@ def update_consumption_time_chart(data):
     color_map = ['red', 'green', 'blue', 'orange', 'purple']  # Example colors for different thresholds
     color_idx = 0
    # barchardata={'items':['Wind power','Total Controllable'],'power':[latestwind,latest_power]}
-    bar_fig_y_max= latestwind if latestwind> latest_power else latest_power
+    
+    #bar_fig_y_max= latestwind if latestwind> latest_power else latest_power
     bar_fig1 = go.Figure()  
     bar_fig1.add_trace(go.Bar(x=['Wind '],y=[latestwind],name='latestwind', text=f'{latestwind} W',textfont=dict(color='black',weight='bold',size=16)),)
     bar_fig1.add_trace(go.Bar(x=['Total load '],y=[latest_power],name='Total sum',text=f'{latest_power} W',textfont=dict(color='black',weight='bold',size=16),))
@@ -384,7 +415,7 @@ def update_consumption_time_chart(data):
             color="black",          # Font color for X-axis ticks
             weight= 'bold'
         ),
-         range=[0, bar_fig_y_max + 500],
+         range=[0, max([latest_threh,latestwind,latest_power]) + 500],
         
     ),
     
@@ -670,13 +701,7 @@ def update_consumption_time_chart(data):
         gridcolor='#cccccc'  # Color of y-axis grid lines
     )
 
-    return [fig,figpriority,figgeneration,figlmp,
-            battery_SOC,
-            battery_voltage,
-            battery_inv_load,
-            battery_inv_buy,
-            battery_inv_sell,
-            battery_inv_output,bar_fig1]
+    return [fig,figpriority,figgeneration,figlmp,battery_status_table,bar_fig1]
 # @app.callback(
 #     Output('production-consumption-chart', 'figure'),
 #     Input('building1-update-interval', 'n_intervals')

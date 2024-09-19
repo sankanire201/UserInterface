@@ -8,7 +8,10 @@ import dash_bootstrap_components as dbc
 from app_instance import app, server
 # Import layouts
 from layouts.home_layout import home_layout
-from layouts.building1_layout import building1_layout
+from UserInterface.layouts.building1_layout import building1_layout
+from UserInterface.layouts.building1_subpages.control_layout import control_layout
+from UserInterface.layouts.building1_subpages.schedule_layout import schedule_layout
+from UserInterface.layouts.building1_subpages.devices_layout import devices_layout
 from layouts.building2_layout import building2_layout
 
 # Import the navigation bar
@@ -23,8 +26,8 @@ app.layout = html.Div([
 
 
 # app.py (continued)
-from callbacks import home_callbacks
-from callbacks import building1_callbacks
+from callbacks import home_callbacks, building1_callbacks, building2_callbacks
+from callbacks.building1_subpages import devices_callbacks, schedule_callbacks, control_callbacks
 # Update the page content based on URL
 @app.callback(Output('page-content', 'children'), Input('url', 'pathname'))
 def display_page(pathname):
@@ -34,8 +37,15 @@ def display_page(pathname):
         return building1_layout
     elif pathname == '/building2':
         return building2_layout
+    elif pathname =='/building1/devices':
+        return devices_layout
+    elif pathname =='/building1/schedule':
+        return schedule_layout
+    elif pathname =='/building1/control':
+        return control_layout
     else:
-        return html.H1('404 Page Not Found')
+        print(pathname)
+        return html.H1('404 Page Not Found1')
 
 
 
