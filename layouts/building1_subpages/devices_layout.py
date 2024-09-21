@@ -7,35 +7,24 @@ import plotly.graph_objects as go
 building1_navbar = create_building_navbar('GNIREBUILDING540')
 import dash
 import pandas as pd
-
+from UserInterface.components.devicetable import DeviceTable
 # Sample data
-data = {
-    "Device ID": ["Device 1", "Device 2", "Device 3", "Device 4", "Device 5"],
-    "Power Consumption (W)": [50, 75, 60, 45, 80],
-    "Data RAM (GB)": [8, 16, 12, 4, 32],
-    "Status": ["Active", "Inactive", "Active", "Maintenance", "Active"],
-    "Priority": ["High", "Medium", "High", "Low", "Critical"],
-}
+ # Example data for 3 devices
+ 
+device_ids = ['Device 1', 'Device 2', 'Device 3','Device 1', 'Device 2', 'Device 3','Device 1', 'Device 2']
+current_power = [4,25,39,30, 45, 60,76,64]  # Simulated power values
+power_max = [100, 400, 300,100, 400, 700,100, 400]
+status_values = [1, 0, 1,1, 0, 1, 0, 1]  # 1 for on, 0 for off
+priority_values = [2, 1, 3,2, 1, 3,1, 3]
 
-df = pd.DataFrame(data)
-
-# Create the table using Plotly's go.Table
-table = go.Table(
-    header=dict(
-        values=list(df.columns),
-        fill_color='lightgrey',
-        align='center',
-        font=dict(color='black', size=18, weight='bold'),
-        height=40
-    ),
-    cells=dict(
-        values=[df[col] for col in df.columns],
-        align='center',
-        font=dict(color='black', size=18, weight='bold'),
-        height=40
-    )
-)
-
+# Create DataFrame
+df = pd.DataFrame({
+    'Device ID': device_ids,
+    'Power Usage (W)': current_power,
+    'Power Max (W)': power_max,
+    'Status': ['On' if status == 1 else 'Off' for status in status_values],
+    'Priority': priority_values
+})
 
 
 device_card = dbc.Card(
@@ -50,14 +39,7 @@ device_card = dbc.Card(
             html.Div([
                 dcc.Graph(
                             id='device-table',
-                            figure={
-                                'data': [table],
-                                'layout': go.Layout(
-                                    margin=dict(l=20, r=20, t=50, b=5),
-                                    height=None,  # Allow it to expand naturally
-                                    autosize=True,  # Enable autosizing
-                                )
-                            },config={'responsive': True},  # Make it responsive
+                           figure=DeviceTable(df),config={'responsive': True},  # Make it responsive
                     style={'height': '100%', 'width': '100%'} 
                         )
             ], className='battery-container flex-row' , style={'width':'100%', 'padding': '0px', 'margin': '5px'})  # Add flex-row class for horizontal alignment
@@ -79,7 +61,7 @@ devices_layout = html.Div([
         # Include the Interval component if not already included
     dcc.Interval(
         id='nire-building-540-update-interval',
-        interval=1*1000,  # Update every minute
+        interval=10*1000,  # Update every minute
         n_intervals=0
     ),
 ])

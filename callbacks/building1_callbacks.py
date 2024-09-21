@@ -16,10 +16,6 @@ from dash import Input, Output, State, html
 from app_instance import app
 
 
-
-
-
-
 # Helper function to guess missing threshold values
 def guess_missing_thresholds(thresholds_list):
     last_thresholds = None
